@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-WorkoutLoggerApplication<workoutlogger>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.GCremez.workoutlogger.WorkoutLoggerApplication",
+            "projectName": "workoutlogger",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
