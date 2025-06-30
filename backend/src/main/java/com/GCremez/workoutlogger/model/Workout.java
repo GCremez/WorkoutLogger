@@ -23,6 +23,11 @@ public class Workout {
     @NotNull
     private LocalDate date;
 
+    @NotNull
+    private Integer duration;
+
+    private String notes;
+
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL)
     private List<Exercise> exercises;
 

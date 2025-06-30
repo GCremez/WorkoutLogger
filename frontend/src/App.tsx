@@ -1,7 +1,7 @@
 import React from 'react';
 import { WorkoutProvider } from './context/WorkoutContext';
-import { WorkoutList } from './components/WorkoutList';
-import { DailySummaryChart } from './components/DailySummaryChart';
+import WorkoutList from './features/workouts/WorkoutList';
+import DailySummaryChart from './features/workouts/DailySummaryChart';
 import './App.css';
 
 function App() {
