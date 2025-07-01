@@ -10,6 +10,15 @@ const WorkoutList: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [selectedWorkout, setSelectedWorkout] = useState<Workout | null>(null);
 
+  // Defensive: ensure workouts is always an array
+  const safeWorkouts = Array.isArray(workouts) ? workouts : [];
+
+  // Debug: log selectedWorkout when it changes
+  if (selectedWorkout) {
+    // eslint-disable-next-line no-console
+    console.log('Selected workout:', selectedWorkout);
+  }
+
   if (loading) return <div className="loading">Loading workouts...</div>;
   if (error) return <div className="error">{error}</div>;
 
@@ -59,27 +68,31 @@ const WorkoutList: React.FC = () => {
       )}
 
       <div className="workouts">
-        {workouts.length === 0 ? (
+        {safeWorkouts.length === 0 ? (
           <p className="no-workouts">No workouts yet. Add your first workout!</p>
         ) : (
-          workouts.map(workout => (
-            <div 
-              key={workout.id} 
-              className="workout-card"
-              onClick={() => setSelectedWorkout(workout)}
-            >
-              <h3>{workout.name}</h3>
-              <p className="workout-date">
-                {new Date(workout.date).toLocaleDateString()}
-              </p>
-              <p className="workout-exercises">
-                {workout.exercises.length} exercises
-              </p>
-              <p className="workout-duration">
-                Duration: {workout.duration} minutes
-              </p>
-            </div>
-          ))
+          safeWorkouts.map(workout => {
+            // Defensive: ensure exercises is always an array
+            const exercises = Array.isArray(workout.exercises) ? workout.exercises : [];
+            return (
+              <div 
+                key={workout.id} 
+                className="workout-card"
+                onClick={() => setSelectedWorkout(workout)}
+              >
+                <h3>{workout.name || 'N/A'}</h3>
+                <p className="workout-date">
+                  {workout.date && !isNaN(new Date(workout.date).getTime()) ? new Date(workout.date).toLocaleDateString() : 'Invalid Date'}
+                </p>
+                <p className="workout-exercises">
+                  {exercises.length} exercises
+                </p>
+                <p className="workout-duration">
+                  Duration: {workout.duration != null ? workout.duration : 'N/A'} minutes
+                </p>
+              </div>
+            );
+          })
         )}
       </div>
     </div>

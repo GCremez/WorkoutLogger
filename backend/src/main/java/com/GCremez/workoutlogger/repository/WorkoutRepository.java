@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface WorkoutRepository extends JpaRepository<Workout, Long> {
 
-    @Query("SELECT new com.GCremez.workoutlogger.dto.DailySummaryDTO(w.date, SUM(e.duration), COUNT(e)) " +
+    @Query("SELECT new com.GCremez.workoutlogger.dto.DailySummaryDTO(w.date, SUM(e.duration), COUNT(e), SUM(e.sets * e.reps * e.weight)) " +
             "FROM Workout w JOIN w.exercises e GROUP BY w.date")
 
     List<DailySummaryDTO> getDailyWorkoutSummary();

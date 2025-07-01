@@ -3,6 +3,7 @@ package com.GCremez.workoutlogger.controller;
 import com.GCremez.workoutlogger.dto.WorkoutDTO;
 import com.GCremez.workoutlogger.model.Workout;
 import com.GCremez.workoutlogger.service.WorkoutService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +40,7 @@ public class WorkoutController {
     // 🟢 Create a new workout
     @PostMapping
     @Transactional
-    public WorkoutDTO createWorkout(@RequestBody Workout workout) {
+    public WorkoutDTO createWorkout(@Valid @RequestBody Workout workout) {
         Workout savedWorkout = workoutService.saveWorkout(workout);
         return WorkoutDTO.fromEntity(savedWorkout);
     }
@@ -47,7 +48,7 @@ public class WorkoutController {
     // 🟢 Update a workout by ID
     @PutMapping("/{id}")
     @Transactional
-    public WorkoutDTO updateWorkout(@PathVariable Long id, @RequestBody Workout updatedWorkout) {
+    public WorkoutDTO updateWorkout(@PathVariable Long id, @Valid @RequestBody Workout updatedWorkout) {
         return workoutService.getWorkoutById(id)
             .map(existing -> {
                 existing.setDate(updatedWorkout.getDate());

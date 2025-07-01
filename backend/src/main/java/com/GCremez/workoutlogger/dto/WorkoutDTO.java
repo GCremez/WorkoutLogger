@@ -7,6 +7,7 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 @Data
 public class WorkoutDTO {
@@ -22,6 +23,8 @@ public class WorkoutDTO {
             dto.setExercises(workout.getExercises().stream()
                 .map(ExerciseDTO::fromEntity)
                 .collect(Collectors.toList()));
+        } else {
+            dto.setExercises(new ArrayList<>());
         }
         return dto;
     }

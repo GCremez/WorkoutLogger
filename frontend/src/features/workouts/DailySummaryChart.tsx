@@ -5,10 +5,15 @@ import './DailySummaryChart.css';
 const DailySummaryChart: React.FC = () => {
   const { workouts } = useWorkout();
 
+  // Defensive: ensure workouts is always an array
+  const safeWorkouts = Array.isArray(workouts) ? workouts : [];
+
   // Calculate total exercises and volume for each day
-  const dailyStats = workouts.reduce((acc, workout) => {
+  const dailyStats = safeWorkouts.reduce((acc, workout) => {
     const date = new Date(workout.date).toLocaleDateString();
-    const totalVolume = workout.exercises.reduce((sum, exercise) => {
+    // Defensive: ensure exercises is always an array
+    const exercises = Array.isArray(workout.exercises) ? workout.exercises : [];
+    const totalVolume = exercises.reduce((sum, exercise) => {
       return sum + (exercise.sets * exercise.reps * exercise.weight);
     }, 0);
 
@@ -19,7 +24,7 @@ const DailySummaryChart: React.FC = () => {
       };
     }
 
-    acc[date].exerciseCount += workout.exercises.length;
+    acc[date].exerciseCount += exercises.length;
     acc[date].totalVolume += totalVolume;
 
     return acc;

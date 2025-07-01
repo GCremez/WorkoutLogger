@@ -10,9 +10,17 @@ interface WorkoutDetailProps {
 }
 
 const WorkoutDetail: React.FC<WorkoutDetailProps> = ({ workout, onClose }) => {
+  // Move all hooks to the top before any conditional logic
   const { updateWorkout, deleteWorkout, addExercise, updateExercise, deleteExercise } = useWorkout();
   const [showExerciseForm, setShowExerciseForm] = useState(false);
   const [editingExercise, setEditingExercise] = useState<Exercise | null>(null);
+
+  // Early return after hooks are called
+  if (!workout) return <div>No workout selected</div>;
+  console.log('WorkoutDetail received workout:', workout);
+
+  // Defensive: ensure exercises is always an array
+  const exercises = Array.isArray(workout.exercises) ? workout.exercises : [];
 
   const handleAddExercise = async (exercise: Exercise) => {
     try {
@@ -95,14 +103,17 @@ const WorkoutDetail: React.FC<WorkoutDetailProps> = ({ workout, onClose }) => {
         )}
 
         <div className="exercises-list">
-          {workout.exercises.length === 0 ? (
+          {exercises.length === 0 ? (
             <p className="no-exercises">No exercises added yet.</p>
           ) : (
-            workout.exercises.map((exercise) => (
+            exercises.filter(Boolean).map((exercise) => (
               <div key={exercise.id} className="exercise-card">
-                <h4>{exercise.name}</h4>
+                <h4>{exercise.name || 'N/A'}</h4>
                 <p className="exercise-details">
                   {exercise.sets} sets × {exercise.reps} reps @ {exercise.weight}kg
+                </p>
+                <p className="exercise-type">
+                  {exercise.type ? exercise.type : 'N/A'}
                 </p>
                 {exercise.notes && (
                   <p className="exercise-notes">{exercise.notes}</p>

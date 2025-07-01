@@ -5,6 +5,7 @@ export interface Exercise {
   reps: number;
   weight: number;
   notes?: string;
+  type?: string;
 }
 
 export interface Workout {
